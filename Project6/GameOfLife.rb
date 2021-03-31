@@ -48,9 +48,9 @@ class GameOfLife
     data = "#{@rows} #{@cols}"
 
     for i in (0...@rows) 
-			for j in (0...@cols) 
-				data += ' '
-				data += @grid[i][j].to_s
+      for j in (0...@cols) 
+	data += ' '
+	data += @grid[i][j].to_s
       end
     end
 
@@ -67,25 +67,25 @@ class GameOfLife
       temp[i].fill(0)
     end
 
-		for i in 0...@rows
-			for j in 0...@cols
+    for i in 0...@rows
+      for j in 0...@cols
         neighbors = getNeighbors(i, j)
 
-				if (@grid[i][j] == 1) 
+	if (@grid[i][j] == 1) 
           if(neighbors < 2 || neighbors > 3)
-				    temp[i][j] = 0
+	  	temp[i][j] = 0
           end
           if(neighbors == 2 || neighbors == 3)
-					  temp[i][j] = 1
+		temp[i][j] = 1
           end
         
-				else
+	else
           if(neighbors == 3)
-					  temp[i][j] = 1
+	    temp[i][j] = 1
           end
         end
-			end
-		end
+      end
+    end
 
     # DO NOT DELETE: set @grid to temp grid
     @grid = temp
@@ -95,15 +95,15 @@ class GameOfLife
   def getNeighbors(_i, _j)
     neighbors = 0
 
-		for x in -1..1
-			for y in -1..1
+    for x in -1..1
+      for y in -1..1
         col = (_i + x + @cols) % @cols
         row = (_j + y + @rows) % @rows
         
         neighbors = neighbors + @grid[col][row]
-			end
-		end
-		neighbors -= @grid[_i][_j]
+      end
+    end
+    neighbors -= @grid[_i][_j]
 
     # DO NOT DELETE THE LINE BELOW
   end
