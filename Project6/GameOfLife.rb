@@ -50,9 +50,9 @@ class GameOfLife
 
     # Iterates through the rows of the grid.
     for i in (0...@rows) 
-			for j in (0...@cols) 
-				data += ' '
-				data += @grid[i][j].to_s
+      for j in (0...@cols) 
+	data += ' '
+	data += @grid[i][j].to_s
       end
     end
 
@@ -81,22 +81,22 @@ class GameOfLife
 				if (@grid[i][j] == 1) 
           # A live cell with less than two live neighbors or more than three neighbors dies.
           if(neighbors < 2 || neighbors > 3)
-				    temp[i][j] = 0
+	  	      temp[i][j] = 0
           end
           # A live cell with two or three live neighbors lives.
           if(neighbors == 2 || neighbors == 3)
-					  temp[i][j] = 1
+		        temp[i][j] = 1
           end
 
         # If the cell is currently dead.
 				else
           #A dead cell with three live neighbors becomes live.
           if(neighbors == 3)
-					  temp[i][j] = 1
+	          temp[i][j] = 1
           end
         end
-			end
-		end
+      end
+    end
 
     # Return the newly created grid for the user.
     @grid = temp
