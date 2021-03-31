@@ -26,18 +26,33 @@ class GameOfLife
     @rows = tokens.shift.to_i
     @cols = tokens.shift.to_i
 
-    #
-    # TO DO: setup @grid as array of arrays and fill it with values from the tokens array
-    #
+    @grid = Array(@rows)
+
+    for i in 0...@rows do 
+      @grid[i] = Array.new(@cols)
+      @grid[i].fill(0)
+    end
+
+    values = 0 
+
+    for i in 0...@rows do
+      for j in 0...@cols do
+        @grid[i][j] = tokens[values].to_i
+        values += 1
+      end
+    end
   end
 
   # Saves the current grid values to the file specified
   def saveGrid(file)
     data = "#{@rows} #{@cols}"
 
-    #
-    # TO DO: append the values in @grid to data
-    #
+    for i in (0...@rows) 
+			for j in (0...@cols) 
+				data += ' '
+				data += @grid[i][j].to_s
+      end
+    end
 
     data += "\n"
     IO.write(file, data)
@@ -52,21 +67,43 @@ class GameOfLife
       temp[i].fill(0)
     end
 
-    #
-    # TO DO: set values in temp grid to next generation
-    #
+		for i in 0...@rows
+			for j in 0...@cols
+        neighbors = getNeighbors(i, j)
 
-    # DO NOE DELETE: set @grid to temp grid
+				if (@grid[i][j] == 1) 
+          if(neighbors < 2 || neighbors > 3)
+				    temp[i][j] = 0
+          end
+          if(neighbors == 2 || neighbors == 3)
+					  temp[i][j] = 1
+          end
+        
+				else
+          if(neighbors == 3)
+					  temp[i][j] = 1
+          end
+        end
+			end
+		end
+
+    # DO NOT DELETE: set @grid to temp grid
     @grid = temp
   end
 
   # Returns the number of neighbors for cell at @grid[i][j]
   def getNeighbors(_i, _j)
-    0
+    neighbors = 0
 
-    #
-    # TO DO: determine number of neighbors of cell at @grid[i][j]
-    #
+		for x in -1..1
+			for y in -1..1
+        col = (_i + x + @cols) % @cols
+        row = (_j + y + @rows) % @rows
+        
+        neighbors = neighbors + @grid[col][row]
+			end
+		end
+		neighbors -= @grid[_i][_j]
 
     # DO NOT DELETE THE LINE BELOW
   end
