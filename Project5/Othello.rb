@@ -49,6 +49,11 @@ class Othello
     initializeBoard
   end
 
+  # Checks if a cell is outside the range of the boards playing field
+  def checkBounds(row, col)      
+    return (row >= 0 && row < @size) && (col >= 0 && col < @size);
+  end
+
   # Initializes the board with start configuration of discs
   def initializeBoard
     # Iterate through the rows of the board.
