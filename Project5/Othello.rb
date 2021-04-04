@@ -152,7 +152,7 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row, col - 1) && (@board[row][col - 1] == opponent_disc)
         # Iterates through the left spaces.
-        (col - 2..0).each do |i|
+        (col - 2..0).step(-1).each do |i|
           # When an empty space is encountered, break from process.
           case @board[row][i]
           when '-'
@@ -160,7 +160,7 @@ class Othello
 
             # Add current player's disc on board when appropriate.
           when @disc
-            (col - 1..i).each do |j|
+            (col - 1...i).step(-1).each do |j|
               @board[row][j] = @disc
             end
           else
@@ -172,7 +172,7 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row + 1, col) && (@board[row + 1][col] == opponent_disc)
         # Iterates through the down spaces.
-        (row + 2..@size).each do |i|
+        (row + 2...@size).step(1).each do |i|
           # When an empty space is encountered, break from process.
           case @board[i][col]
           when '-'
@@ -180,7 +180,7 @@ class Othello
 
             # Add current player's disc on board when appropriate.
           when @disc
-            (row + 1..i).each do |j|
+            (row + 1..i).step(1).each do |j|
               @board[j][col] = @disc
             end
           else
@@ -192,7 +192,7 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row, col + 1) && (@board[row][col + 1] == opponent_disc)
         # Iterates through the right spaces.
-        (col + 2..@size).each do |i|
+        (col + 2...@size).step(1).each do |i|
           # When an empty space is encountered, break from process.
           case @board[row][i]
           when '-'
@@ -200,7 +200,7 @@ class Othello
 
             # Add current player's disc on board when appropriate.
           when @disc
-            (col + 1..i).each do |j|
+            (col + 1..i).step(1).each do |j|
               @board[row][j] = @disc
             end
           else
@@ -212,7 +212,7 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row - 1, col) && (@board[row - 1][col] == opponent_disc)
         # Iterates through the up spaces.
-        (row - 2..0).each do |i|
+        (row - 2..0).step(-1).each do |i|
           # When an empty space is encountered, break from process.
           case @board[i][col]
           when '-'
@@ -220,7 +220,7 @@ class Othello
 
             # Add current player's disc on board when appropriate.
           when @disc
-            (row - 1..i).each do |j|
+            (row - 1..i).step(-1).each do |j|
               @board[j][col] = @disc
             end
           else
@@ -232,8 +232,8 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row - 1, col + 1) && (@board[row - 1][col + 1] == opponent_disc)
         # Iterates through the up-right spaces.
-        (row - 2..0).each do |i|
-          (col - 2..0).each do |j|
+        (row - 2..0).step(-1).each do |i|
+          (col - 2..0).step(-1).each do |j|
             # When an empty space is encountered, break from process.
             case @board[i][j]
             when '-'
@@ -241,8 +241,8 @@ class Othello
 
               # Add current player's disc on board when appropriate.
             when @disc
-              (row - 1..i).each do |k|
-                (col - 1..j).each do |l|
+              (row - 1..i).step(-1).each do |k|
+                (col - 1..j).step(-1).each do |l|
                   @board[k][l] = @disc
                 end
               end
@@ -256,8 +256,8 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row + 1, col - 1) && (@board[row + 1][col - 1] == opponent_disc)
         # Iterates through the down-left spaces.
-        (row + 2..@size).each do |i|
-          (col - 2..0).each do |j|
+        (row + 2...@size).step(1).each do |i|
+          (col - 2..0).step(-1).each do |j|
             # When an empty space is encountered, break from process.
             case @board[i][j]
             when '-'
@@ -265,8 +265,8 @@ class Othello
 
               # Add current player's disc on board when appropriate.
             when @disc
-              (row + 1..i).each do |k|
-                (col - 1..j).each do |l|
+              (row + 1..i).step(1).each do |k|
+                (col - 1..j).step(-1).each do |l|
                   @board[k][l] = @disc
                 end
               end
@@ -280,8 +280,8 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row - 1, col + 1) && (@board[row - 1][col + 1] == opponent_disc)
         # Iterates through the up-left spaces.
-        (row - 2..0).each do |i|
-          (col + 2...@size).each do |j|
+        (row - 2..0).step(-1).each do |i|
+          (col + 2...@size).step(1).each do |j|
             # When an empty space is encountered, break from process.
             case @board[i][j]
             when '-'
@@ -289,8 +289,8 @@ class Othello
 
               # Add current player's disc on board when appropriate.
             when @disc
-              (row - 1..i).each do |k|
-                (col + 1..j).each do |l|
+              (row - 1..i).step(-1).each do |k|
+                (col + 1..j).step(1).each do |l|
                   @board[k][l] = @disc
                 end
               end
@@ -304,8 +304,8 @@ class Othello
       # Checks if the directional iteration is within bounds.
       if checkBounds(row + 1, col - 1) && (@board[row + 1][col - 1] == opponent_disc)
         # Iterates through the down-right spaces.
-        (row + 2...@size).each do |i|
-          (col + 2...@size).each do |j|
+        (row + 2...@size).step(1).each do |i|
+          (col + 2...@size).step(1).each do |j|
             # When an empty space is encountered, break from process.
             case @board[i][j]
             when '-'
@@ -313,8 +313,8 @@ class Othello
 
               # Add current player's disc on board when appropriate.
             when @disc
-              (row + 1..i).each do |k|
-                (col + 1..j).each do |l|
+              (row + 1..i).step(1).each do |k|
+                (col + 1..j).step(1).each do |l|
                   @board[k][l] = @disc
                 end
               end
