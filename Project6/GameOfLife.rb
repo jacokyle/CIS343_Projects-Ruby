@@ -71,28 +71,28 @@ class GameOfLife
     end
 
     # Iterates through the rows of the grid.
-		for i in 0...@rows
+      for i in 0...@rows
       # Iterates through the columns of the grid.
-			for j in 0...@cols
+	for j in 0...@cols
         # Obtain the number of neighbors that exist around a current cell.
         neighbors = getNeighbors(i, j)
 
         # If the cell is currently live.
-				if (@grid[i][j] == 1) 
+	if (@grid[i][j] == 1) 
           # A live cell with less than two live neighbors or more than three neighbors dies.
           if(neighbors < 2 || neighbors > 3)
-	  	      temp[i][j] = 0
+	    temp[i][j] = 0
           end
           # A live cell with two or three live neighbors lives.
           if(neighbors == 2 || neighbors == 3)
-		        temp[i][j] = 1
+            temp[i][j] = 1
           end
 
         # If the cell is currently dead.
-				else
+	else
           #A dead cell with three live neighbors becomes live.
           if(neighbors == 3)
-	          temp[i][j] = 1
+	    temp[i][j] = 1
           end
         end
       end
@@ -108,19 +108,19 @@ class GameOfLife
     neighbors = 0
 
     # Iterate through the rows.
-		for x in -1..1
+    for x in -1..1
       # Iterate through the columns.
-			for y in -1..1
+      for y in -1..1
         # Checks if surrounding cells are live.
         col = (_i + x + @cols) % @cols
         row = (_j + y + @rows) % @rows
         
         # If so, add to the neighbors count from the grid.
         neighbors = neighbors + @grid[col][row]
-			end
-		end
+      end
+    end
     # Do not count yourself in neighbors.
-		neighbors -= @grid[_i][_j]
+    neighbors -= @grid[_i][_j]
   end
 
   # Returns a string representation of GameOfLife object
