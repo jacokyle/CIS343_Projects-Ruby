@@ -5,10 +5,10 @@
 
 class Othello
   # Constants
-  WHITE = 'W'
-  BLACK = 'B'
-  EMPTY = '-'
-  TIE = 'T'
+  WHITE = 'W'.freeze
+  BLACK = 'B'.freeze
+  EMPTY = '-'.freeze
+  TIE = 'T'.freeze
 
   # Creates getter methods for instance variables @size, @turn, @disc,
   # @p1Disc, and @p2Disc
@@ -108,11 +108,14 @@ class Othello
         row = rows + i
         col = cols + j
 
+        # Checks if i and j are both zero.
+        next if i.zero? && j.zero?
+
         # If the grid is inbounds, continue the code.
         next unless checkBounds(row, col)
 
         # If the board is on the game piece, or a empty spot, continue the code.
-        next if @board[row][col] == disc || @board[row][col] == '-'
+        next if (@board[row][col] == disc) || (@board[row][col] == '-')
 
         # Iterate through positions on grid until the code is out of bounds.
         while checkBounds(row, col)
@@ -120,7 +123,7 @@ class Othello
           break if @board[row][col] == '-'
 
           # If the current position is the disc, return true.
-          true if @board[row][col] == disc
+          return true if @board[row][col] == disc
 
           # Increment the row and column by i and j, respectively.
           row += i
@@ -351,14 +354,13 @@ class Othello
   # else returns false
   def isValidMoveAvailableForDisc(_disc)
     # Iterate through the rows of the board.
-    @size.each do |i|
+    (0...@size).each do |i|
       # Iterate through the columns of the board.
-      @size.each do |j|
+      (0...@size).each do |j|
         # Checks if space is currently empty.
-        if @board[i][j] == ('-') && isValidMove(i, j)
-          # If the move is valid, return true.
-          true
-        end
+        next if @board[i][j] != '-'
+        # If the move is valid, return true.
+        return true if isValidMove(i, j)
       end
     end
 
@@ -369,11 +371,11 @@ class Othello
   # Returns true if the board is fully occupied with discs; else returns false
   def isBoardFull
     # Iterate through the rows of the board.
-    @size.each do |i|
+    (0...@size).each do |i|
       # Iterate through the columns of the board.
-      @size.each do |j|
+      (0...@size).each do |j|
         # If the board has empty spaces, return false.
-        false if @board[i][j] == '-'
+        return false if @board[i][j] == '-'
       end
     end
     true
@@ -398,9 +400,9 @@ class Othello
     return 0 unless isGameOver
 
     # Iterate through the rows of the board.
-    @size.each do |i|
+    (0...@size).each do |i|
       # Iterate through the columns of the board.
-      @size.each do |j|
+      (0...@size).each do |j|
         # If the space contains a white disc, add one point.
         white_points += 1 if @board[i][j] == 'W'
 
