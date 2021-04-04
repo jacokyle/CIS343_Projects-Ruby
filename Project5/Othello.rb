@@ -51,7 +51,7 @@ class Othello
 
   # Checks if a cell is outside the range of the boards playing field
   def checkBounds(row, col)      
-    return (row >= 0 && row < @size) && (col >= 0 && col < @size);
+    return (row >= 0 && row < @size) && (col >= 0 && col < @size)
   end
 
   # Initializes the board with start configuration of discs
@@ -62,7 +62,9 @@ class Othello
       for j in (0...@size)
         # Empty spaces will be identified with a hyphen.
          @board[i][j] = '-';
+      j += 1
       end
+    i += 1
     end
 
     # Switch used for initializing different board sizes.
@@ -109,8 +111,8 @@ class Othello
         col = cols + j;
 
         # If the grid is inbounds, continue the code.
-        if (!@checkBounds)
-            next
+        if (!checkBounds(row, col))
+          next
         end
 
         # If the board is on the game piece, or a empty spot, continue the code.
@@ -119,22 +121,24 @@ class Othello
         end
 
         # Iterate through positions on grid until the code is out of bounds.
-        while (@checkBounds)
+        while (checkBounds(row, col))
           # If the current position is empty, break from the code.
           if (@board[row][col] == "-") 
-              break
+            break
           end
 
           # If the current position is the disc, return true.
           if (@board[row][col] == disc) 
-              true
+            true
           end
 
           # Increment the row and column by i and j, respectively.
           row += i;
           col += j;
         end
+      j += 1
       end
+    i += 1
     end
 
     # DO NOT DELETE - if control reaches this statement, then it is not a valid move
@@ -152,7 +156,208 @@ class Othello
     # place the current player's disc at row,col
     @board[row][col] = @disc
  
-    #TODO
+    # If move is valid, run through board game process.
+    if (isValidMove(row, col))
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row, col - 1))
+        # Checks if adjacent space is occupied by opponent.
+        if (@board[row][col - 1] == opponentDisc)
+          # Iterates through the left spaces.
+          for i in col-2...0
+            # When an empty space is encountered, break from process.
+            if (@board[row][i] == '-')
+              break
+
+            # Add current player's disc on board when appropriate.
+            elsif (@board[row][i] == @disc)
+              for j in col-1...i
+                @board[row][j] = @disc;
+                j -= 1
+              end
+            end
+          i -= 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row + 1, col)) 
+        # Reassign right spaces to current player when appropriate.
+        if (@board[row + 1][col] == opponentDisc) 
+          #Iterates through the down spaces.
+          for i in row+2...@size
+            # When an empty space is encountered, break from process.
+            if (@board[i][col] == '-') 
+              break
+
+            # Add current player's disc on board when appropriate.
+            elsif (@board[i][col] == @disc) 
+              for j in row+1...i
+                @board[j][col] = @disc;
+                j += 1
+              end
+            end
+          i += 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row, col + 1)) 
+        # Reassign down spaces to current player when appropriate.
+        if (@board[row][col + 1] == opponentDisc) 
+          # Iterates through the right spaces.
+          for i in col+2...@size
+            # When an empty space is encountered, break from process.
+            if (@board[row][i] == '-') 
+              break
+
+            # Add current player's disc on board when appropriate.
+            elsif (@board[row][i] == @disc) 
+              for j in col+1...i
+                @board[row][j] = @disc;
+                j += 1
+              end
+            end
+          i += 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row - 1, col)) 
+        # Reassign left spaces to current player when appropriate.
+        if (@board[row - 1][col] == opponentDisc) 
+          # Iterates through the up spaces.
+          for i in row-2...0
+            # When an empty space is encountered, break from process.
+            if (@board[i][col] == '-') 
+              break
+
+            # Add current player's disc on board when appropriate.
+            elsif (@board[i][col] == @disc) 
+              for j in row-1...i
+                @board[j][col] = @disc;
+                j -= 1
+              end
+            end
+          i -= 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row - 1, col + 1)) 
+        # Reassign up-left spaces to current player when appropriate.
+        if (@board[row - 1][col + 1] == opponentDisc) 
+          # Iterates through the up-right spaces.
+          for i in row-2...0
+            for j in col-2...0
+              # When an empty space is encountered, break from process.
+              if (@board[i][j] == '-') 
+                break
+
+              # Add current player's disc on board when appropriate.
+              elsif (@board[i][j] == @disc) 
+                for k in row-1...i
+                  for l in col-1...j
+                    @board[k][l] = @disc;
+                    l -= 1
+                  end
+                k -= 1
+                end
+              end
+            j -= 1
+            end
+          i -= 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row + 1, col - 1)) 
+        # Reassign up-right spaces to current player when appropriate.
+        if (@board[row + 1][col - 1] == opponentDisc) 
+          # Iterates through the down-left spaces.
+          for i in row+2...@size
+            for j in col-2...0
+              # When an empty space is encountered, break from process.
+              if (@board[i][j] == '-') 
+                break
+
+              # Add current player's disc on board when appropriate.
+              elsif (@board[i][j] == @disc) 
+                for k in row+1...i
+                  for l in col-1...j
+                    @board[k][l] = @disc;
+                    l -= 1
+                  end
+                k += 1
+                end
+              end
+            j -= 1
+            end
+          i += 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row - 1, col + 1)) 
+        # Reassign down-left spaces to current player when appropriate.
+        if (@board[row - 1][col + 1] == opponentDisc) 
+          # Iterates through the up-left spaces.
+          for i in row-2...0
+            for j in col+2...@size
+              # When an empty space is encountered, break from process.
+              if (@board[i][j] == '-') 
+                break
+
+              # Add current player's disc on board when appropriate.
+              elsif (@board[i][j] == @disc) 
+                for k in row-1...i
+                  for l in col+1...j
+                    @board[k][l] = @disc;
+                    l += 1
+                  end 
+                k -= 1
+                end
+              end
+            j += 1
+            end
+          i -= 1
+          end
+        end
+      end
+
+      # Checks if the directional iteration is within bounds.
+      if (checkBounds(row + 1, col - 1)) 
+        # Reassign down-right spaces to current player when appropriate.
+        if (@board[row + 1][col - 1] == opponentDisc) 
+          # Iterates through the down-right spaces.
+          for i in row+2...@size
+            for j in col+2...@size
+              # When an empty space is encountered, break from process.
+              if (@board[i][j] == '-') 
+                break
+
+              # Add current player's disc on board when appropriate.
+              elsif (@board[i][j] == @disc) 
+                for k in row+1...i
+                  for l in col+1...j
+                    @board[k][l] = @disc;
+                    l += 1
+                  end
+                k += 1
+                end
+              end
+            j += 1
+            end
+          i += 1
+          end
+        end
+      end
+    end
 
     # DO NOT DELETE - prepares for next turn if game is not over
     prepareNextTurn unless isGameOver
@@ -182,17 +387,19 @@ class Othello
   # else returns false
   def isValidMoveAvailableForDisc(_disc)
     # Iterate through the rows of the board.
-    for i in @size do
+    for i in @size
       # Iterate through the columns of the board.
-      for j in @size do
+      for j in @size
         # Checks if space is currently empty.
         if (@board[i][j] == '-')
           # If the move is valid, return true.
-          if (@isValidMove)
+          if (isValidMove(i, j, _disc))
             true
           end
         end
+      j += 1
       end
+    i += 1
     end
 
     # DO NOT DELETE - if control reaches this statement, then a valid move is not available
@@ -202,14 +409,16 @@ class Othello
   # Returns true if the board is fully occupied with discs; else returns false
   def isBoardFull
     # Iterate through the rows of the board.
-    for i in @size do
+    for i in @size 
       # Iterate through the columns of the board.
-      for j in @size do
+      for j in @size 
         # If the board has empty spaces, return false.
         if (@board[i][j] == '-')
           false
         end
+      j += 1
       end
+    i += 1
     end
     true
   end
@@ -230,14 +439,14 @@ class Othello
     blackPoints = 0;
 
     # If the game is not over, return 0.
-    if !@isGameOver
-      0
+    if (!isGameOver(@size, @board))
+      return 0
     end
 
     # Iterate through the rows of the board.
-    for i in @size do
+    for i in @size
       # Iterate through the columns of the board.
-      for j in @size do
+      for j in @size 
         # If the space contains a white disc, add one point.
         if (@board[i][j] == 'W') 
           whitePoints += 1
@@ -247,20 +456,22 @@ class Othello
         if (@board[i][j] == 'B') 
           blackPoints += 1
         end
+      j += 1
       end
+    i += 1
     end
 
     # If player "White" has more points than player "Black", return "White" as winner.
     if (whitePoints > blackPoints) 
-        'W'
+      return 'W'
     end
   
     # If player "Black" has more points than player "White", return "Black" as winner.
     if (whitePoints < blackPoints) 
-        'B'
+      return 'B'
     end
     # Otherwise, declare a tie.
-    'T'
+    return 'T'
   end
 
   # Returns a string representation of the board
