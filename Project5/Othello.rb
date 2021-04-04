@@ -5,10 +5,10 @@
 
 class Othello
   # Constants
-  WHITE = 'W'.freeze
-  BLACK = 'B'.freeze
-  EMPTY = '-'.freeze
-  TIE = 'T'.freeze
+  WHITE = 'W'
+  BLACK = 'B'
+  EMPTY = '-'
+  TIE = 'T'
 
   # Creates getter methods for instance variables @size, @turn, @disc,
   # @p1Disc, and @p2Disc
@@ -141,187 +141,32 @@ class Othello
   def placeDiscAt(row, col)
     return unless isValidMove(row, col)
 
-    # Returns the player disc for next turn.
-    opponent_disc = prepareNextTurn
-
     # place the current player's disc at row,col
     @board[row][col] = @disc
 
-    # If move is valid, run through board game process.
-    if isValidMove(row, col)
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row, col - 1) && (@board[row][col - 1] == opponent_disc)
-        # Iterates through the left spaces.
-        (col - 2..0).step(-1).each do |i|
-          # When an empty space is encountered, break from process.
-          case @board[row][i]
-          when '-'
+    # Variables to help with iterating through grid successfully.
+    rows = row
+    cols = col
+
+    # Iterates through the nearby positions.
+    (-1..1).each do |i|
+      (-1..1).each do |j|
+        # Increment the row and column by i and j, respectively.
+        row = rows + i
+        col = cols + j
+
+        # Loops while checking bounds and the position is not empty.
+        while checkBounds(row, col) && @board[row][col] != '-'
+          # If the current position contains the disc, place the player's disc.
+          if @board[row][col] == @disc
+            (0..@size).step(1).each do |_k|
+              @board[rows + i][cols + j] = @disc
+            end
             break
-
-            # Add current player's disc on board when appropriate.
-          when @disc
-            (col - 1...i).step(-1).each do |j|
-              @board[row][j] = @disc
-            end
-          else
-            # This is required by RubyMine.
           end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row + 1, col) && (@board[row + 1][col] == opponent_disc)
-        # Iterates through the down spaces.
-        (row + 2...@size).step(1).each do |i|
-          # When an empty space is encountered, break from process.
-          case @board[i][col]
-          when '-'
-            break
-
-            # Add current player's disc on board when appropriate.
-          when @disc
-            (row + 1..i).step(1).each do |j|
-              @board[j][col] = @disc
-            end
-          else
-            # This is required by RubyMine.
-          end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row, col + 1) && (@board[row][col + 1] == opponent_disc)
-        # Iterates through the right spaces.
-        (col + 2...@size).step(1).each do |i|
-          # When an empty space is encountered, break from process.
-          case @board[row][i]
-          when '-'
-            break
-
-            # Add current player's disc on board when appropriate.
-          when @disc
-            (col + 1..i).step(1).each do |j|
-              @board[row][j] = @disc
-            end
-          else
-            # This is required by RubyMine.
-          end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row - 1, col) && (@board[row - 1][col] == opponent_disc)
-        # Iterates through the up spaces.
-        (row - 2..0).step(-1).each do |i|
-          # When an empty space is encountered, break from process.
-          case @board[i][col]
-          when '-'
-            break
-
-            # Add current player's disc on board when appropriate.
-          when @disc
-            (row - 1..i).step(-1).each do |j|
-              @board[j][col] = @disc
-            end
-          else
-            # This is required by RubyMine.
-          end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row - 1, col + 1) && (@board[row - 1][col + 1] == opponent_disc)
-        # Iterates through the up-right spaces.
-        (row - 2..0).step(-1).each do |i|
-          (col - 2..0).step(-1).each do |j|
-            # When an empty space is encountered, break from process.
-            case @board[i][j]
-            when '-'
-              break
-
-              # Add current player's disc on board when appropriate.
-            when @disc
-              (row - 1..i).step(-1).each do |k|
-                (col - 1..j).step(-1).each do |l|
-                  @board[k][l] = @disc
-                end
-              end
-            else
-              # This is required by RubyMine.
-            end
-          end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row + 1, col - 1) && (@board[row + 1][col - 1] == opponent_disc)
-        # Iterates through the down-left spaces.
-        (row + 2...@size).step(1).each do |i|
-          (col - 2..0).step(-1).each do |j|
-            # When an empty space is encountered, break from process.
-            case @board[i][j]
-            when '-'
-              break
-
-              # Add current player's disc on board when appropriate.
-            when @disc
-              (row + 1..i).step(1).each do |k|
-                (col - 1..j).step(-1).each do |l|
-                  @board[k][l] = @disc
-                end
-              end
-            else
-              # This is required by RubyMine.
-            end
-          end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row - 1, col + 1) && (@board[row - 1][col + 1] == opponent_disc)
-        # Iterates through the up-left spaces.
-        (row - 2..0).step(-1).each do |i|
-          (col + 2...@size).step(1).each do |j|
-            # When an empty space is encountered, break from process.
-            case @board[i][j]
-            when '-'
-              break
-
-              # Add current player's disc on board when appropriate.
-            when @disc
-              (row - 1..i).step(-1).each do |k|
-                (col + 1..j).step(1).each do |l|
-                  @board[k][l] = @disc
-                end
-              end
-            else
-              # This is required by RubyMine.
-            end
-          end
-        end
-      end
-
-      # Checks if the directional iteration is within bounds.
-      if checkBounds(row + 1, col - 1) && (@board[row + 1][col - 1] == opponent_disc)
-        # Iterates through the down-right spaces.
-        (row + 2...@size).step(1).each do |i|
-          (col + 2...@size).step(1).each do |j|
-            # When an empty space is encountered, break from process.
-            case @board[i][j]
-            when '-'
-              break
-
-              # Add current player's disc on board when appropriate.
-            when @disc
-              (row + 1..i).step(1).each do |k|
-                (col + 1..j).step(1).each do |l|
-                  @board[k][l] = @disc
-                end
-              end
-            else
-              # This is required by RubyMine.
-            end
-          end
+          # Increment the individual variables used for navigating the grid.
+          row += i
+          col += j
         end
       end
     end
