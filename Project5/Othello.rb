@@ -5,10 +5,10 @@
 
 class Othello
   # Constants
-  WHITE = 'W'
-  BLACK = 'B'
-  EMPTY = '-'
-  TIE = 'T'
+  WHITE = 'W'.freeze
+  BLACK = 'B'.freeze
+  EMPTY = '-'.freeze
+  TIE = 'T'.freeze
 
   # Creates getter methods for instance variables @size, @turn, @disc,
   # @p1Disc, and @p2Disc
@@ -144,29 +144,28 @@ class Othello
     # place the current player's disc at row,col
     @board[row][col] = @disc
 
-    # Variables to help with iterating through grid successfully.
-    rows = row
-    cols = col
-
     # Iterates through the nearby positions.
     (-1..1).each do |i|
       (-1..1).each do |j|
         # Increment the row and column by i and j, respectively.
-        row = rows + i
-        col = cols + j
+        rows = row + i
+        cols = col + j
+
+        next if rows.negative? || cols.negative? || (rows > @size - 1) || (cols > @size - 1) || (i.zero? && j.zero?)
+
+        next unless (@board[rows][cols] != @disc) && (@board[rows][cols] != '-')
 
         # Loops while checking bounds and the position is not empty.
-        while checkBounds(row, col) && @board[row][col] != '-'
+        while checkBounds(rows, cols) && @board[rows][cols] != '-'
           # If the current position contains the disc, place the player's disc.
-          if @board[row][col] == @disc
-            (0..@size).step(1).each do |_k|
-              @board[rows + i][cols + j] = @disc
+          if @board[rows][cols] == @disc
+            (0...@size).each do |_k|
+              @board[row + i][col + j] = @disc
             end
-            break
           end
           # Increment the individual variables used for navigating the grid.
-          row += i
-          col += j
+          rows += i
+          cols += j
         end
       end
     end
